@@ -12,8 +12,13 @@ def fetch(outfile):
         with open(os.path.join(CORPUS_DIR, "raw", f"condensed_{year}.json"), 'r') as f:
             lines = json.load(f)
             for line in lines:
+                is_retweet = line['is_retweet']
                 tweet = line['text']
                 tweet = tweet.replace('\n', ' ')
+                
+                if is_retweet or tweet[0:2] == "\"@": # Skip retweet or user quote
+                    continue
+                
                 tweets.append(tweet)
 
 
