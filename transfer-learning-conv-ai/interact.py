@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from itertools import chain
 from pprint import pformat
 import warnings
+from stylize import add_interjection, setup_interjections, setup_NERs, swap_NER
 
 import torch
 import torch.nn.functional as F
@@ -136,6 +137,8 @@ def run():
     logger.info("Selected personality: %s", tokenizer.decode(chain(*personality)))
 
     history = []
+    interject_dict = setup_interjections()
+    NER_dict = setup_NERs()
     while True:
         raw_text = input(">>> ")
         while not raw_text:
@@ -147,7 +150,17 @@ def run():
         history.append(out_ids)
         history = history[-(2*args.max_history+1):]
         out_text = tokenizer.decode(out_ids, skip_special_tokens=True)
+        
+
+        '''
+        make changes to out_text here :)
+        '''
+        out_text = add_interjection(out_text, interject_dict)
+        out_text = swap_NER(out_text, NER_dict)
         print(out_text)
+
+
+
 
 
 if __name__ == "__main__":

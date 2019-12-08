@@ -1,0 +1,4 @@
+{"test":[{
+    "personality": ["i am a smart physicist .", "i share my nobel prize with Leonard .",
+                    "i wear silly costumes .", "i enjoy science fiction ."]
+}]}
