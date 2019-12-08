@@ -1,5 +1,10 @@
 ### comp550-research-project
 
+# How to interact with chatbot
+$ cd transfer-learning-conv-ai
+$ python ./interact.py --dataset_path Sheldon.txt --log conv1.txt --inter yes --NER yes
+remember to remove dataset_cache_OpenAIGPTTokenizer when you change character
+
 # How to generate friends and BBT corpus
 
 1. edit the character name in dialogue_gen.py to the character that you want

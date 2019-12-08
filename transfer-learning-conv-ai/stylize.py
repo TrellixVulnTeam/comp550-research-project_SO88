@@ -2,6 +2,7 @@ import os
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import random
 import spacy
+import json
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -12,6 +13,7 @@ def swap_NER(sentence, NER_dict):
     doc = nlp(sentence)
     NP = ""
     output = sentence
+    NER_mod = False
     has_verb = False
     verb = ""
     for token in doc:
@@ -26,7 +28,8 @@ def swap_NER(sentence, NER_dict):
             if (chunk.root.dep_ in ["nsubj", "dobj"]):
                 if (chunk.root.head.text == verb):
                     output = output.replace(chunk.text, NP, 1)
-    return output
+                    NER_mod = True
+    return (output, NER_mod)
                         
 
 
@@ -97,29 +100,16 @@ def read_interjections(fname):
         interjections.append(inter)
     return interjections
 
+def read_NER(fname):
+    with open(fname, 'r') as json_file:
+        NER_dict = json.load(json_file)
+    return NER_dict
 
 def setup_NERs():
     corpus = "BBT_corpus"
-    person = "Sheldon"
+    person = "Sheldon_dobj"
     fname = os.path.join(os.pardir, "style_transfer","NER", corpus, f"{person}.txt")
-
-
-    NER_dict = {"win": ["my nobel prize", "a nobel prize", "the nobel peace prize", "the nobel prize"], 
-    "share": ["a nobel prize"], "bring": ["these star wars sheets"], 
-    "return": ["my star wars sheets"], "have": ["the nobel prize"], 
-    "destroy": ["the batman movie franchise"], 
-    "meet": ["her bible study group"], 
-    "see": ["the new star wars movie", "star trek the motion picture"], 
-    "hear": ["the original star trek theme"], 
-    "adapt": ["a star trek fan fiction novella"], 
-    "wear": ["a star trek uniform", "a star trek balok mask"], 
-    "know": ["batman"], "include": ["a nobel prize"], 
-    "clutch": ["that nobel prize"], 
-    "embarrass": ["a nobel laureate"], "get": ["nobel prizes"], 
-    "quote": ["the bible"], "celebrate": ["star wars day"], 
-    "enjoy": ["star wars day"], "play": ["the star trek theme"], 
-    "keep": ["the bible"], "compose": ["my nobel acceptance speech"], 
-    "eat": ["enough star wars cereal"], "call": ["star wars toast"]}
+    NER_dict = read_NER(fname)
 
     return NER_dict
 
@@ -127,12 +117,12 @@ def setup_NERs():
 
 
 def setup_interjections():
-    #corpus = "BBT_corpus"
-    #person = "Sheldon"
+    corpus = "BBT_corpus"
+    person = "Sheldon"
 
 
-    corpus = "friends_corpus"
-    person = "Monica"
+    # corpus = "friends_corpus"
+    # person = "Monica"
     fname = os.path.join(os.pardir, "style_transfer","interjections", corpus, f"{person}.txt")
     interjections = read_interjections(fname)
     pos_interject, neg_interject = interject_sentiment(interjections)

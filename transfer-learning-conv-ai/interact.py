@@ -89,13 +89,28 @@ def sample_sequence(personality, history, tokenizer, model, args, current_output
     return current_output
 
 def run():
+
+
+    '''
+    Use case
+    REMEBER TO CLEAN CACHE FILE
+    python ./interact.py --dataset_path Sheldon.txt --log conv1.txt --inter yes --NER yes
+    '''
     parser = ArgumentParser()
     parser.add_argument("--dataset_path", type=str, default="", help="Path or url of the dataset. If empty download from S3.")
+    parser.add_argument("--log", type=str, default="", help="file name of the log file for conversation")
+    parser.add_argument("--inter", type=str, default="", help="add interjection into bot response")
+    parser.add_argument("--NER", type=str, default="", help="swap NER in bot response")
+
+
+
     parser.add_argument("--dataset_cache", type=str, default='./dataset_cache', help="Path or url of the dataset cache")
     parser.add_argument("--model", type=str, default="openai-gpt", help="Model type (openai-gpt or gpt2)", choices=['openai-gpt', 'gpt2'])  # anything besides gpt2 will load openai-gpt
     parser.add_argument("--model_checkpoint", type=str, default="", help="Path, url or short name of the model")
     parser.add_argument("--max_history", type=int, default=2, help="Number of previous utterances to keep in history")
     parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu", help="Device (cuda or cpu)")
+
+
 
     parser.add_argument("--no_sample", action='store_true', help="Set to use greedy decoding instead of sampling")
     parser.add_argument("--max_length", type=int, default=20, help="Maximum length of the output utterances")
@@ -108,7 +123,7 @@ def run():
 
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__file__)
-    logger.info(pformat(args))
+    #logger.info(pformat(args))
 
     if args.model_checkpoint == "":
         if args.model == 'gpt2':
@@ -123,14 +138,14 @@ def run():
     	torch.cuda.manual_seed(args.seed)
 
 
-    logger.info("Get pretrained model and tokenizer")
+    #logger.info("Get pretrained model and tokenizer")
     tokenizer_class, model_class = (GPT2Tokenizer, GPT2LMHeadModel) if args.model == 'gpt2' else (OpenAIGPTTokenizer, OpenAIGPTLMHeadModel)
     tokenizer = tokenizer_class.from_pretrained(args.model_checkpoint)
     model = model_class.from_pretrained(args.model_checkpoint)
     model.to(args.device)
     add_special_tokens_(model, tokenizer)
 
-    logger.info("Sample a personality")
+    #logger.info("Sample a personality")
     dataset = get_dataset(tokenizer, args.dataset_path, args.dataset_cache)
     personalities = [dialog["personality"] for dataset in dataset.values() for dialog in dataset]
     personality = random.choice(personalities)
@@ -139,11 +154,45 @@ def run():
     history = []
     interject_dict = setup_interjections()
     NER_dict = setup_NERs()
+
+    isInterject = False
+    isNER = False
+
+    if (args.inter != ""):
+        isInterject = True
+
+    if (args.NER != ""):
+        isNER = True
+
+    if (args.log != ""):
+        outfile = open(args.log, "w")
+        outfile.write("Selected personality: " + tokenizer.decode(chain(*personality)))
+        if (isInterject):
+            outfile.write("Adding Interjection \n")
+        if (isNER):
+            outfile.write("Swapping NER \n")
+
+
+    NERmod = False
+
+
     while True:
         raw_text = input(">>> ")
         while not raw_text:
             print('Prompt should not be empty!')
             raw_text = input(">>> ")
+
+        #add exit command
+        if (raw_text in ["exit", "quit"]):
+            print ("exiting system, thanks for the conversation, human")
+            break
+
+        #write to log file
+        if (args.log != ""):
+            outfile.write("human: " + raw_text + "\n")
+
+
+
         history.append(tokenizer.encode(raw_text))
         with torch.no_grad():
             out_ids = sample_sequence(personality, history, tokenizer, model, args)
@@ -155,10 +204,25 @@ def run():
         '''
         make changes to out_text here :)
         '''
-        out_text = add_interjection(out_text, interject_dict)
-        out_text = swap_NER(out_text, NER_dict)
+        if (isInterject):
+            out_text = add_interjection(out_text, interject_dict)
+        if (isNER):
+            out_text, NERmod = swap_NER(out_text, NER_dict)
         print(out_text)
 
+        #write to log file
+        if (args.log != ""):
+            if (not NERmod):
+                outfile.write("bot: " + out_text + "\n")
+            else:
+                outfile.write("bot: " + out_text + " [NER] " "\n")
+
+
+        NERmod = False
+
+    if (args.log != ""):
+        print ("log file complete")
+        outfile.close()
 
 
 
