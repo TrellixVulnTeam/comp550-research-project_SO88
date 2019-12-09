@@ -132,12 +132,12 @@ def run():
             raise ValueError("Interacting with GPT2 requires passing a finetuned model_checkpoint")
         else:
             args.model_checkpoint = download_pretrained_model()
-	
-	
+    
+    
     if args.seed != 0:
-    	random.seed(args.seed)
-    	torch.random.manual_seed(args.seed)
-    	torch.cuda.manual_seed(args.seed)
+        random.seed(args.seed)
+        torch.random.manual_seed(args.seed)
+        torch.cuda.manual_seed(args.seed)
 
 
     #logger.info("Get pretrained model and tokenizer")
@@ -157,10 +157,10 @@ def run():
     isJoey = False
     isSheldon = False
     if ("joey" in args.log):
-    	isJoey = True
+        isJoey = True
 
     if ("sheldon" in args.log):
-    	isSheldon = True
+        isSheldon = True
 
 
 
@@ -186,10 +186,10 @@ def run():
 
 
     if (args.log != ""):
-    	if os.path.isfile(args.log + ".txt"):
-		    outfile = args.log + str(random.randint(1,100)) + ".txt"
-		else:
-		    outfile = args.log + ".txt"
+        if os.path.isfile(args.log + ".txt"):
+            outfile = args.log + str(random.randint(1,100)) + ".txt"
+        else:
+            outfile = args.log + ".txt"
         outfile = open(outfile, "w")
         outfile.write("Selected personality: " + tokenizer.decode(chain(*personality)))
         if (isShake):

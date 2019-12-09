@@ -145,10 +145,16 @@ def setup_NERs(isJoey, isSheldon):
     if (isJoey):
         corpus = "friends_corpus"
         person = "Joey"
-
-    if (isSheldon):
+    elif (isSheldon):
         corpus = "BBT_corpus"
         person = "Sheldon"
+    else:
+        corpus = "BBT_corpus"
+        person = "Sheldon"
+    
+
+
+
 
     fname = os.path.join(os.pardir, "style_transfer","NER", corpus, f"{person}.txt")
     NER_dict = read_NER(fname)
@@ -163,10 +169,13 @@ def setup_interjections(isJoey, isSheldon):
     if (isJoey):
         corpus = "friends_corpus"
         person = "Joey"
-
-    if (isSheldon):
+    elif (isSheldon):
         corpus = "BBT_corpus"
         person = "Sheldon"
+    else:
+        corpus = "BBT_corpus"
+        person = "Sheldon"
+
 
     fname = os.path.join(os.pardir, "style_transfer","interjections", corpus, f"{person}.txt")
     interjections = read_interjections(fname)
