@@ -244,12 +244,12 @@ def run():
 
         #write to log file
         if (args.log != ""):
-            if (not NERmod):
-                outfile.write("bot: " + out_text + "\n")
+            if (NERmod):
+                outfile.write("bot: " + out_text + " [NER] " "\n")
             elif (has_swap):
                 outfile.write("bot: " + out_text + " [Shakespeare] " + "\n")
             else:
-                outfile.write("bot: " + out_text + " [NER] " "\n")
+                outfile.write("bot: " + out_text + "\n")
 
 
         NERmod = False
