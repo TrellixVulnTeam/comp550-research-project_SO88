@@ -107,7 +107,7 @@ def read_NER(fname):
 
 def setup_NERs():
     corpus = "BBT_corpus"
-    person = "Sheldon_dobj"
+    person = "Sheldon"
     fname = os.path.join(os.pardir, "style_transfer","NER", corpus, f"{person}.txt")
     NER_dict = read_NER(fname)
 
