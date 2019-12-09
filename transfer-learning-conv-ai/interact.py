@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 from itertools import chain
 from pprint import pformat
 import warnings
-from stylize import add_interjection, setup_interjections, setup_NERs, swap_NER
+from stylize import *
 
 import torch
 import torch.nn.functional as F
@@ -94,11 +94,13 @@ def run():
     '''
     Use case
     REMEBER TO CLEAN CACHE FILE
+    python ./interact.py --dataset_path Sheldon.txt --log conv1.txt --shake yes
     python ./interact.py --dataset_path Sheldon.txt --log conv1.txt --inter yes --NER yes
     '''
     parser = ArgumentParser()
     parser.add_argument("--dataset_path", type=str, default="", help="Path or url of the dataset. If empty download from S3.")
     parser.add_argument("--log", type=str, default="", help="file name of the log file for conversation")
+    parser.add_argument("--shake", type=str, default="", help="Shakespearize the response")
     parser.add_argument("--inter", type=str, default="", help="add interjection into bot response")
     parser.add_argument("--NER", type=str, default="", help="swap NER in bot response")
 
@@ -154,9 +156,14 @@ def run():
     history = []
     interject_dict = setup_interjections()
     NER_dict = setup_NERs()
+    shake_dict = setup_Shakespeare()
 
     isInterject = False
     isNER = False
+    isShake = False
+
+    if (args.shake != ""):
+        isShake = True 
 
     if (args.inter != ""):
         isInterject = True
@@ -164,13 +171,20 @@ def run():
     if (args.NER != ""):
         isNER = True
 
+
+
+
     if (args.log != ""):
         outfile = open(args.log, "w")
         outfile.write("Selected personality: " + tokenizer.decode(chain(*personality)))
+        if (isShake):
+            outfile.write("Shakespearize the response \n")
         if (isInterject):
             outfile.write("Adding Interjection \n")
         if (isNER):
             outfile.write("Swapping NER \n")
+
+
 
 
     NERmod = False
@@ -204,21 +218,27 @@ def run():
         '''
         make changes to out_text here :)
         '''
-        if (isInterject):
+        if (isShake):
+            out_text, has_swap = shakespearize(out_text, shake_dict)
+        elif (isInterject):
             out_text = add_interjection(out_text, interject_dict)
-        if (isNER):
+        elif (isNER):
             out_text, NERmod = swap_NER(out_text, NER_dict)
+
         print(out_text)
 
         #write to log file
         if (args.log != ""):
             if (not NERmod):
                 outfile.write("bot: " + out_text + "\n")
+            elif (has_swap):
+                outfile.write("bot: " + out_text + " [Shakespeare] " + "\n")
             else:
                 outfile.write("bot: " + out_text + " [NER] " "\n")
 
 
         NERmod = False
+        has_swap = False
 
     if (args.log != ""):
         print ("log file complete")

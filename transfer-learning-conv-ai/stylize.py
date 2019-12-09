@@ -49,6 +49,22 @@ def add_interjection(sentence, interject_dict):
     output = interjection + ", " + sentence
     return output
 
+'''
+heuristics for shakespeare swap
+'''
+def shakespearize(sentence, shake_dict):
+    doc = nlp(sentence)
+    has_swap = False
+    output = sentence
+    for token in doc:
+        if (token.text in shake_dict):
+            output = output.replace(token.text, shake_dict[token.text], 1)
+            has_swap = True
+    return (output, has_swap)
+
+
+
+
 
 
 '''
@@ -104,6 +120,26 @@ def read_NER(fname):
     with open(fname, 'r') as json_file:
         NER_dict = json.load(json_file)
     return NER_dict
+
+
+def setup_Shakespeare():
+
+    # corpus = "shakespeare"
+    # fname = os.path.join(os.pardir, "style_transfer","NER", corpus, f"{person}.txt")
+
+    shake_dict = {'you': 'thou','your': 'thy',
+    'are': 'art',
+    'do': 'dost',
+    'does': 'doth',
+    'have': 'hast',
+    'were': 'wast',
+    'before': 'ere',
+    'why': 'wherefore',
+    'often': 'oft',
+    'anything': 'aught'}
+
+    return shake_dict
+
 
 def setup_NERs():
     corpus = "BBT_corpus"
