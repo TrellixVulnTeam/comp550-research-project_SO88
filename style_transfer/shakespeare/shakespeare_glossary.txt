@@ -1,0 +1,29 @@
+translation_dict = {
+	'you': 'thou',
+	'your': 'thy'
+	'are': 'art',
+	'do': 'dost',
+	'does': 'doth',
+	'have': 'hast',
+	'were': 'wast',
+	'before': 'ere',
+	'why': 'wherefore',
+	'often': 'oft',
+	'anything': 'aught',
+}
+
+# Source: https://learn.lexiconic.net/shakewords.htm
+
+
+# Verified with: https://www.merriam-webster.com
+thou: archaic: the one addressed
+thy: archaic: of or relating to thee or thyself especially as possessor or agent or as object of an action
+art: archaic present tense second-person singular of BE
+dost: archaic present tense second-person singular of DO
+doth: archaic present tense third-person singular of DO
+hast: archaic present tense second-person singular of HAVE
+wast: archaic past tense second-person singular of BE
+ere: old-fashioned + literary: preceding in time : earlier than
+wherefore: for what reason or purpose : WHY
+oft: OFTEN
+aught: : ANYTHING, ALL, EVERYTHING, archaic: AT ALL
