@@ -9,7 +9,7 @@ from itertools import chain
 from pprint import pformat
 import warnings
 from stylize import *
-
+import os
 import torch
 import torch.nn.functional as F
 
@@ -94,8 +94,8 @@ def run():
     '''
     Use case
     REMEBER TO CLEAN CACHE FILE
-    python ./interact.py --dataset_path Sheldon.txt --log conv1.txt --shake yes
-    python ./interact.py --dataset_path Sheldon.txt --log conv1.txt --inter yes --NER yes
+    python ./interact.py --dataset_path english.txt --log conv --shake yes
+    python ./interact.py --dataset_path sheldon.txt --log conv --inter yes --NER yes
     '''
     parser = ArgumentParser()
     parser.add_argument("--dataset_path", type=str, default="", help="Path or url of the dataset. If empty download from S3.")
@@ -154,13 +154,24 @@ def run():
     logger.info("Selected personality: %s", tokenizer.decode(chain(*personality)))
 
     history = []
-    interject_dict = setup_interjections()
-    NER_dict = setup_NERs()
+    isJoey = False
+    isSheldon = False
+    if ("joey" in args.log):
+    	isJoey = True
+
+    if ("sheldon" in args.log):
+    	isSheldon = True
+
+
+
+    interject_dict = setup_interjections(isJoey, isSheldon)
+    NER_dict = setup_NERs(isJoey, isSheldon)
     shake_dict = setup_Shakespeare()
 
     isInterject = False
     isNER = False
     isShake = False
+
 
     if (args.shake != ""):
         isShake = True 
@@ -175,7 +186,11 @@ def run():
 
 
     if (args.log != ""):
-        outfile = open(args.log, "w")
+    	if os.path.isfile(args.log + ".txt"):
+		    outfile = args.log + str(random.randint(1,100)) + ".txt"
+		else:
+		    outfile = args.log + ".txt"
+        outfile = open(outfile, "w")
         outfile.write("Selected personality: " + tokenizer.decode(chain(*personality)))
         if (isShake):
             outfile.write("Shakespearize the response \n")

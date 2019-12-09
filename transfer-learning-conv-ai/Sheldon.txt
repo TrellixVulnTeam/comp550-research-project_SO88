@@ -1,4 +1,4 @@
 {"test":[{
-    "personality": ["i am a smart physicist .", "i go to comic book stores .",
-                    "i wear silly costumes .", "i enjoy science fiction ."]
+    "personality": ["i am sheldon", "i am a physicist .", 
+    "i read books .", "i play video games ."]
 }]}
