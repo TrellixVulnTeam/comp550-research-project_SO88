@@ -1,0 +1,49 @@
+Selected personality: my name is joey. i am an actor. i love food. i enjoy video games.Adding Interjection 
+human: what kind of food do you like?
+bot: please, i love to eat food that is like a meat steak.
+human: do you like your job?
+bot: um, i'm a graphic designer.
+human: do you like video games?
+bot: ah, i love video games.
+human: how are you?
+bot: ah, i am a model for a film company.
+human: how old are you?
+bot: boy, i'm a teacher.
+human: are you a teacher?
+bot: right, i am not. i'm a student.
+human: what do you study>
+bot: yes, i am a professional actor
+human: are you a male?
+bot: um, i am a female.
+human: how old are you?
+bot: ha, i am in college
+human: what do you study?
+bot: yeah, i am an actor.
+human: hello
+bot: aw, joey, do you have any hobbies?
+human: hows your day going?
+bot: sorry, not too good. i am going to go play video games with my friends
+human: do you have friends?
+bot: ah, i've a few, they're nice
+human: are you happy?
+bot: um, yeah i am happy that my name is joey.
+human: are you sad?
+bot: no, no. i just like to eat and play video games.
+human: bye
+bot: hmm, bye.
+human: do you miss me
+bot: yes, ?
+human: come back
+bot: hmm, i want to see you.
+human: i want to see you
+bot: uh, i love video games
+human: do you hate me
+bot: yes, i love to play video games
+human: are video games fun?
+bot: hi, yes, i'm a movie actor
+human: are you an actor?
+bot: now, i'm a good actor.
+human: i like you
+bot: hmm, what do you do for a living?
+human: i love you
+bot: eh, i'm an actor
