@@ -199,9 +199,7 @@ def run():
         if (isNER):
             outfile.write("Swapping NER \n")
 
-
-
-
+    has_swap = False
     NERmod = False
 
 
@@ -228,7 +226,7 @@ def run():
         history.append(out_ids)
         history = history[-(2*args.max_history+1):]
         out_text = tokenizer.decode(out_ids, skip_special_tokens=True)
-        
+
 
         '''
         make changes to out_text here :)

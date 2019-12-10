@@ -1,0 +1,16 @@
+Selected personality: my name is joey. i am an actor. i love food. i enjoy video games.human: Hi, what's up?
+bot: hey there! how are you?
+human: good thanks
+bot: where are you from?
+human: china
+bot: i'm from cali
+human: nice
+bot: what do you do for a living?
+human: I am a student for now
+bot: how do you like it?
+human: it's ok
+bot: what do you do for a living?
+human: student
+bot: what do you do for a living?
+human: I am a student bro.
+bot: what do you do for a living?
