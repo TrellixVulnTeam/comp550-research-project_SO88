@@ -118,9 +118,9 @@ MAX_LENGTH = 10  # Maximum sentence length to consider
 #
 
 save_dir = os.path.join("data", "save")
-corpus_name = "cornell movie-dialogs corpus"
+corpus_name = "shakespeare" # cornell movie-dialogs corpus
 corpus = os.path.join("data", corpus_name)
-datafile = os.path.join(corpus, "formatted_movie_lines.txt")
+datafile = os.path.join(corpus, "shakespeare_translation.csv") # formatted_shakespeare.txt, formatted_movie_lines.txt
 
 voc, pairs, corpus_name = loadPreprocessData(corpus, corpus_name, datafile, save_dir, MAX_LENGTH)
 

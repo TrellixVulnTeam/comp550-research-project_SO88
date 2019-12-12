@@ -18,6 +18,12 @@ The corpus is already in the 'data' folder.
 
 Run format_shakespeare_dialogs.py.
 
+### Shakespeare translations dialogs corpus
+
+Run generate_shakespeare_translation.py.
+
 ## Train the model and interact with the bot
 
-Run model.py.
+Edit the corpus name and datafile name in main.py.
+
+Run main.py.
